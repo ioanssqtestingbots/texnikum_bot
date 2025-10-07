@@ -1,8 +1,8 @@
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-# ⭐ ВСТАВЬТЕ СЮДА ВАШ ТОКЕН ⭐
-BOT_TOKEN = "8321715749:AAGIEWT1qzXSr9iR2KWybsslwfzZPc1FsSw"
+import os
+BOT_TOKEN = os.environ['BOT_TOKEN']
 
 # Создаем бота
 bot = telebot.TeleBot(BOT_TOKEN)
@@ -139,5 +139,6 @@ def handle_query(call):
 print("✅ Бот успешно запущен!")
 print("📱 Перейдите в Telegram и напишите /start вашему боту")
 print("⏹️ Для остановки нажмите Ctrl+C")
+
 
 bot.infinity_polling()
