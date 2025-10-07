@@ -16,10 +16,11 @@ def send_welcome(message):
     btn1 = InlineKeyboardButton("📚 Технические средства", callback_data='tech')
     btn2 = InlineKeyboardButton("🌍 География", callback_data='geo') 
     btn3 = InlineKeyboardButton("👥 Обществознание", callback_data='soc')
-    btn4 = InlineKeyboardButton("📞 Связаться с преподавателем", callback_data='contact')
-    btn5 = InlineKeyboardButton("ℹ️ О боте", callback_data='about')
+    btn4 = InlineKeyboardButton("☁️ Облако общество/география", callback_data='cloud')
+    btn5 = InlineKeyboardButton("📞 Связаться с преподавателем", callback_data='contact')
+    btn6 = InlineKeyboardButton("ℹ️ О боте", callback_data='about')
     
-    markup.add(btn1, btn2, btn3, btn4, btn5)
+    markup.add(btn1, btn2, btn3, btn4, btn5, btn6)
     
     bot.send_message(
         message.chat.id,
@@ -79,6 +80,21 @@ def handle_query(call):
 🔹 Тема 3: Экономические отношения
 • Конспект: скоро будет
 """
+    elif call.data == 'cloud':
+        text = """
+☁️ Электронное облако с материалами по географии/обществу:
+
+📁 Google Drive с материалами:
+https://drive.google.com/drive/folders/1wPT76zG8mo2zz_4ZIYpyS0FPZEioxkc3
+
+Здесь вы найдете:
+• Презентации по географии
+• Лекции по обществознанию  
+• Дополнительные материалы
+• Конспекты занятий
+
+💡 Для доступа可能需要 авторизация через учебный аккаунт.
+"""
     elif call.data == 'contact':
         text = """
 📞 Контакты преподавателя:
@@ -102,6 +118,7 @@ def handle_query(call):
 • Доступ к лекциям и презентациям
 • Конспекты занятий  
 • Контакты преподавателя
+• Электронное облако с материалами
 
 🔄 Обновления материалов происходят регулярно.
 """
@@ -112,6 +129,7 @@ def handle_query(call):
             InlineKeyboardButton("📚 Технические средства", callback_data='tech'),
             InlineKeyboardButton("🌍 География", callback_data='geo'),
             InlineKeyboardButton("👥 Обществознание", callback_data='soc'),
+            InlineKeyboardButton("☁️ Облако общество/география", callback_data='cloud'),
             InlineKeyboardButton("📞 Связаться с преподавателем", callback_data='contact'),
             InlineKeyboardButton("ℹ️ О боте", callback_data='about')
         )
