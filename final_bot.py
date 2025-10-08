@@ -1,8 +1,23 @@
+
+# VERSION 1.2_TEST
+
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
-
+from flask import Flask
 import os
-BOT_TOKEN = os.environ['BOT_TOKEN']
+import threading
+
+# flask для рендеровского хостинга
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is running!"
+
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
+
+if not BOT_TOKEN:
+    raise ValueError("BOT_TOKEN environment variable is not set")
 
 # Создаем бота
 bot = telebot.TeleBot(BOT_TOKEN)
@@ -10,7 +25,7 @@ bot = telebot.TeleBot(BOT_TOKEN)
 # Обработчик команды /start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    # Создаем клавиатуру
+    # КНОПКИ
     markup = InlineKeyboardMarkup(row_width=1)
     
     btn1 = InlineKeyboardButton("📚 Технические средства", callback_data='tech')
@@ -150,9 +165,21 @@ https://drive.google.com/drive/folders/1wPT76zG8mo2zz_4ZIYpyS0FPZEioxkc3
         reply_markup=markup
     )
 
-# Запуск бота
-print("✅ Бот успешно запущен!")
-print("📱 Перейдите в Telegram и напишите /start вашему боту")
-print("⏹️ Для остановки нажмите Ctrl+C")
+def run_bot():
+    """Функция для запуска бота в отдельном потоке"""
+    print("✅ Бот успешно запущен!")
+    print("📱 Перейдите в Telegram и напишите /start вашему боту")
+    try:
+        bot.infinity_polling()
+    except Exception as e:
+        print(f"❌ Ошибка в работе бота: {e}")
 
-bot.infinity_polling()
+if __name__ == '__main__':
+    # Запускаем бота в отдельном потоке
+    bot_thread = threading.Thread(target=run_bot)
+    bot_thread.daemon = True
+    bot_thread.start()
+    
+    # Запускаем Flask сервер для Render
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
